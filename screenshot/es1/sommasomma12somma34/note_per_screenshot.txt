@@ -1,0 +1,15 @@
+1) main chiama jal scann sulla prima stringa somma(somma(1,2),somma(3,4))
+2) viene aggiornato lo stack con le prime 3 word dedicate ai valori di: $a0, $ra, $zero
+3) il primo argomento della prima somma è somma(1,2), viene quindi chiamata la jal scan. viene modificato il valore di sp, in modo da allocare altre 3 word per i valori di $a0, $ra e $zero.
+4) la chiamata di jal scann questa volta è per il primo valore di somma(1,2), cioè 1. prima della chiamata di jr $ra, verrà modificato il valore di ritorno $v0 con 1.
+5) si nota che il valore dello stack è tornato uguale al valore registrato precedentemente della chiamata di jal scan del valore 1.
+6) viene chiamato il jal scan per il secondo valore di somma(1,2), cioè 2. il valore di $sp viene aggiornato, possiamo notare che il suo valore è uguale alla precedente chiamata di jal scan di 1, questo è normale dato che viene allocata la stessa dimensione nello stack.
+7) a questo punto termina anche la scan di somma(1,2) che aggiornerà il valore di $v0 con 3 prima del comando di jr $ra.
+8) questo screenshot eliminalo che è sbagliato e ci si confonde e basta.
+9) la terza word nello stack viene aggiornata con il valore della scan precedente, si può quindi passare al secondo valore di somma(somma(1,2),somma(3,4)), viene chiamato il jal scan per somma(3,4).
+10) viene chiamato il jal scan del primo valore di somma(3,4), cioè 3. alla fine di questa chiamata sarà restituito il valore 3 nel registro $v0.
+11) si ritorna allo scan di somma(3,4) e si aggiorna il valore della terza word allocata sullo stack con il valore di ritorno $v0. possiamo notare che il valore dello stack pointer è uguale al valore precedente alla chiamata di jal scan del primo valore.
+12) finito lo scan del secondo valore di somma(3,4), si inserisce in $v0 il valore 7 e si torna al chiamante.
+13) si torna al chiamante somma(somma(1,2),somma(3,4)), a questo punto viene prelevato dallo stack il valore di $v0 e viene sommato al valore di ritorno dell'ultima scann (sarà effettuata la somma 3+7). si aggiorna quindi il valore di ritorno $v0 con il risultato ottenuto.
+14) si aggiorna $ra con il valore di ritorno contenuto nella seconda parola allocata nello stack e si torna al chiamante della jal scan di somma(somma(1,2),somma(3,4)), che in questo caso è proprio il main.
+15) prima della chiusura i valori dei registri saranno questi mostrati
